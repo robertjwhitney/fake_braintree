@@ -92,6 +92,12 @@ module FakeBraintree
      'amount'          => options[:amount] }
   end
 
+  def self.settle_transaction(transaction_id)
+    transaction = FakeBraintree.registry.transactions[transaction_id]
+    transaction_response = {"id" => transaction["id"], "amount" => transaction["amount"], "status" => Braintree::Transaction::Status::Settled}
+    FakeBraintree.registry.transactions[transaction_id] = transaction_response
+  end
+
   private
 
   def self.set_configuration

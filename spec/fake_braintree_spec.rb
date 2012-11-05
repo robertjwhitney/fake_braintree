@@ -141,3 +141,16 @@ describe FakeBraintree, ".generate_transaction" do
     end
   end
 end
+
+describe FakeBraintree, ".settle_transaction" do
+  it 'updates the status to settled' do
+    status = Braintree::Transaction::Status::Settled
+    t = Braintree::Transaction.sale(:payment_method_token => cc_token,
+                                     :amount => 10.00,
+                                     :options => {
+                                      :submit_for_settlement => true
+                                     })
+    result = FakeBraintree.settle_transaction(t.transaction.id)
+    FakeBraintree.registry.transactions[t.transaction.id]['status'].should == status
+  end
+end
