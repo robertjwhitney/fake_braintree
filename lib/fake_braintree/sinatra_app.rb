@@ -118,7 +118,8 @@ module FakeBraintree
         if options.fetch("submit_for_settlement", false) == true
           status           = "submitted_for_settlement"
         end
-        transaction_response = {"id" => transaction_id, "amount" => transaction["amount"], "status" => status}
+        transaction_response = {"id" => transaction_id, "amount" => transaction["amount"],
+                                "status" => status, "order_id" => transaction["order_id"]}
         FakeBraintree.registry.transactions[transaction_id] = transaction_response
         gzipped_response(200, transaction_response.to_xml(:root => "transaction"))
       end

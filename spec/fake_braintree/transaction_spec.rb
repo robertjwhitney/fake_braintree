@@ -7,6 +7,12 @@ describe FakeBraintree::SinatraApp do
       result.should be_success
     end
 
+    it "returns the order_id" do
+      id = rand(10)
+      result = Braintree::Transaction.sale(:payment_method_token => cc_token, :amount => 10.00, order_id: id)
+      result.transaction.order_id.should == id
+    end
+
     context "when all cards are declined" do
       before { FakeBraintree.decline_all_cards! }
 
